@@ -7,7 +7,7 @@ const RootLayout = () => {
       <nav>
         <Header />
       </nav>
-      <main>
+      <main className="bg-slate-100 min-h-[100vh] dark:bg-slate-800">
         <Outlet />
       </main>
     </>

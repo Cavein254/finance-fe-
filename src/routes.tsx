@@ -15,6 +15,10 @@ const router = createBrowserRouter([
         path: "/dashboard",
         element: <LandingPage />,
       },
+      {
+        path: "/ticker/:ticker",
+        element: <TickerPage />,
+      },
     ],
   },
   {
@@ -23,10 +27,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <MainPage />,
-      },
-      {
-        path: "/ticker/:ticker",
-        element: <TickerPage />,
       },
     ],
   },

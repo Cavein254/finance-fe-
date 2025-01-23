@@ -1,13 +1,19 @@
 import { Fragment } from "react/jsx-runtime";
-import { Interval, intervalDurations } from "../../utils/chart";
 import { Button } from "../ui/button";
 
 interface DurationBtnProps {
   selectedInterval: undefined | string;
   setSelectedInterval: (arg0: string) => void;
+  setTitle: (arg0: string | undefined) => void;
+}
+interface IntervalItemProps {
+  id: number;
+  name: string;
+  inter: string;
+  fullName?: string;
 }
 
-const timeToInterval = [
+const timeToInterval: Array<IntervalItemProps> = [
   {
     id: 1,
     name: "1 Mon",
@@ -54,14 +60,19 @@ const timeToInterval = [
 const DurationBtn = ({
   selectedInterval,
   setSelectedInterval,
+  setTitle,
 }: DurationBtnProps) => {
-  const IntervalBtn = ({ uInterval }) => (
+  const handleDuration = (uInterval: IntervalItemProps) => {
+    setSelectedInterval(uInterval.inter);
+    setTitle(uInterval.fullName ? uInterval.fullName : "");
+  };
+  const IntervalBtn = ({ uInterval }: { uInterval: IntervalItemProps }) => (
     <Fragment key={uInterval.id}>
       <Button
         className={`${
           selectedInterval === uInterval.inter ? "bg-blue-500 " : ""
         } font-bold`}
-        onClick={() => setSelectedInterval(uInterval.inter)}
+        onClick={() => handleDuration(uInterval)}
       >
         {uInterval.name}
       </Button>

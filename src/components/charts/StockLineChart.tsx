@@ -2,7 +2,12 @@ import { VictoryChart, VictoryLine, VictoryTheme } from "victory";
 import { getDataForInterval, LineAxis } from "../../utils/chart";
 import { useEffect, useState } from "react";
 
-const StockLineChart = ({ stock1, selectedInterval }) => {
+interface StockLineChartProps {
+  stock1: any;
+  selectedInterval: string;
+}
+
+const StockLineChart = ({ stock1, selectedInterval }: StockLineChartProps) => {
   const [udata, setUdata] = useState(undefined);
   const mData = udata ? LineAxis(udata) : LineAxis(stock1);
 
