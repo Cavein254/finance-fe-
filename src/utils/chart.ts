@@ -46,3 +46,8 @@ export function getDataForInterval(
     return entryDate > startTime;
   });
 }
+
+export const percentageReturn = (close: number, open: number) => {
+  const results = ((close - open) / open) * 100;
+  return results.toFixed(2);
+};

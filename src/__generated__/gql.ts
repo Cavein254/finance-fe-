@@ -15,6 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query GetHistoricalData($symbol: String!) {\n    getHistoricalData(symbol: $symbol) {\n      data {\n        id\n        stockId\n        date\n        open\n        high\n        low\n        close\n        openInt\n      }\n      error\n      success\n    }\n  }\n": types.GetHistoricalDataDocument,
+    "\n  query GetHistoricalFirstRow {\n  getHistoricalFirstRow {\n    success\n    data {\n      id\n      name\n      stockData {\n        id\n        stockId\n        date\n        open\n        high\n        low\n        close\n        openInt\n      }\n      ticker\n    }\n    error\n  }\n}\n  ": types.GetHistoricalFirstRowDocument,
     "\n  query GetCurrentUser {\n    getCurrentUser {\n      error\n      success\n      data {\n        id\n        name\n        image\n        email\n        createdAt\n        updatedAt\n      }\n    }\n  }\n": types.GetCurrentUserDocument,
 };
 
@@ -36,6 +37,10 @@ export function gql(source: string): unknown;
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query GetHistoricalData($symbol: String!) {\n    getHistoricalData(symbol: $symbol) {\n      data {\n        id\n        stockId\n        date\n        open\n        high\n        low\n        close\n        openInt\n      }\n      error\n      success\n    }\n  }\n"): (typeof documents)["\n  query GetHistoricalData($symbol: String!) {\n    getHistoricalData(symbol: $symbol) {\n      data {\n        id\n        stockId\n        date\n        open\n        high\n        low\n        close\n        openInt\n      }\n      error\n      success\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetHistoricalFirstRow {\n  getHistoricalFirstRow {\n    success\n    data {\n      id\n      name\n      stockData {\n        id\n        stockId\n        date\n        open\n        high\n        low\n        close\n        openInt\n      }\n      ticker\n    }\n    error\n  }\n}\n  "): (typeof documents)["\n  query GetHistoricalFirstRow {\n  getHistoricalFirstRow {\n    success\n    data {\n      id\n      name\n      stockData {\n        id\n        stockId\n        date\n        open\n        high\n        low\n        close\n        openInt\n      }\n      ticker\n    }\n    error\n  }\n}\n  "];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

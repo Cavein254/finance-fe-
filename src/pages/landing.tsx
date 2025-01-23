@@ -1,24 +1,8 @@
 import Tickercard from "../components/common/ticker-card";
+import Dashboard from "../components/dashboard/Dashboard";
 
 const LandingPage = () => {
-  return (
-    <div className="flex gap-2 flex-wrap justify-center items-center">
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-      <Tickercard />
-    </div>
-  );
+  return <Dashboard />;
 };
 
 export default LandingPage;

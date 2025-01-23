@@ -30,6 +30,7 @@ export type Query = {
   __typename?: 'Query';
   getCurrentUser?: Maybe<UserDataResponse>;
   getHistoricalData?: Maybe<GetStockDataResponse>;
+  getHistoricalFirstRow?: Maybe<StockSingleRowResults>;
 };
 
 
@@ -47,6 +48,21 @@ export type StockData = {
   open?: Maybe<Scalars['Float']['output']>;
   openInt?: Maybe<Scalars['Int']['output']>;
   stockId?: Maybe<Scalars['String']['output']>;
+};
+
+export type StockSingleRow = {
+  __typename?: 'StockSingleRow';
+  id: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  stockData?: Maybe<Array<Maybe<StockData>>>;
+  ticker?: Maybe<Scalars['String']['output']>;
+};
+
+export type StockSingleRowResults = {
+  __typename?: 'StockSingleRowResults';
+  data?: Maybe<Array<Maybe<StockSingleRow>>>;
+  error?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
 };
 
 export type User = {
@@ -73,6 +89,11 @@ export type GetHistoricalDataQueryVariables = Exact<{
 
 export type GetHistoricalDataQuery = { __typename?: 'Query', getHistoricalData?: { __typename?: 'GetStockDataResponse', error?: string | null, success: boolean, data?: Array<{ __typename?: 'StockData', id: string, stockId?: string | null, date?: any | null, open?: number | null, high?: number | null, low?: number | null, close?: number | null, openInt?: number | null } | null> | null } | null };
 
+export type GetHistoricalFirstRowQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetHistoricalFirstRowQuery = { __typename?: 'Query', getHistoricalFirstRow?: { __typename?: 'StockSingleRowResults', success: boolean, error?: string | null, data?: Array<{ __typename?: 'StockSingleRow', id: string, name?: string | null, ticker?: string | null, stockData?: Array<{ __typename?: 'StockData', id: string, stockId?: string | null, date?: any | null, open?: number | null, high?: number | null, low?: number | null, close?: number | null, openInt?: number | null } | null> | null } | null> | null } | null };
+
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -80,4 +101,5 @@ export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUser?: { __t
 
 
 export const GetHistoricalDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetHistoricalData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"symbol"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getHistoricalData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"symbol"},"value":{"kind":"Variable","name":{"kind":"Name","value":"symbol"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"stockId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"open"}},{"kind":"Field","name":{"kind":"Name","value":"high"}},{"kind":"Field","name":{"kind":"Name","value":"low"}},{"kind":"Field","name":{"kind":"Name","value":"close"}},{"kind":"Field","name":{"kind":"Name","value":"openInt"}}]}},{"kind":"Field","name":{"kind":"Name","value":"error"}},{"kind":"Field","name":{"kind":"Name","value":"success"}}]}}]}}]} as unknown as DocumentNode<GetHistoricalDataQuery, GetHistoricalDataQueryVariables>;
+export const GetHistoricalFirstRowDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetHistoricalFirstRow"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getHistoricalFirstRow"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"success"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"stockData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"stockId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"open"}},{"kind":"Field","name":{"kind":"Name","value":"high"}},{"kind":"Field","name":{"kind":"Name","value":"low"}},{"kind":"Field","name":{"kind":"Name","value":"close"}},{"kind":"Field","name":{"kind":"Name","value":"openInt"}}]}},{"kind":"Field","name":{"kind":"Name","value":"ticker"}}]}},{"kind":"Field","name":{"kind":"Name","value":"error"}}]}}]}}]} as unknown as DocumentNode<GetHistoricalFirstRowQuery, GetHistoricalFirstRowQueryVariables>;
 export const GetCurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}},{"kind":"Field","name":{"kind":"Name","value":"success"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]}}]} as unknown as DocumentNode<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
