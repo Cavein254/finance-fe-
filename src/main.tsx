@@ -4,11 +4,15 @@ import "./index.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes.tsx";
 import { ThemeProvider } from "./components/theme/theme-provider.tsx";
+import { ApolloProvider } from "@apollo/client";
+import { client } from "./graphql/client.ts";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <ApolloProvider client={client}>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </ApolloProvider>
   </StrictMode>
 );
