@@ -9,6 +9,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { User } from "../../__generated__/graphql";
+import { Link } from "react-router-dom";
 
 interface HeaderDropDownProps {
   user: User;
@@ -30,7 +31,9 @@ const HeaderDropDown = ({ user }: HeaderDropDownProps) => {
           <DropdownMenuItem>Profile</DropdownMenuItem>
           <DropdownMenuItem>Billing</DropdownMenuItem>
           <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link to="">Logout</Link>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
