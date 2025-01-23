@@ -2,7 +2,12 @@ import { ModeToggle } from "../common/mode-toggle";
 import { Button } from "../ui/button";
 import { FaMoneyBills } from "react-icons/fa6";
 import { FaUnlockAlt } from "react-icons/fa";
+import { useContext } from "react";
+import { MyUserContext } from "../../context/UserContext";
 const Header = () => {
+  const userContext = useContext(MyUserContext);
+  const { user } = userContext;
+  console.log(user);
   return (
     <div className=" bg-green-600">
       <div className="flex justify-between items-center p-4">
