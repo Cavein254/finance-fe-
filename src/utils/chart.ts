@@ -16,6 +16,8 @@ export const intervalDurations = {
   "6mo": 6 * 30 * 24 * 60 * 60 * 1000,
   "1yr": 1 * 12 * 30 * 24 * 60 * 60 * 1000,
   "5yr": 5 * 12 * 30 * 24 * 60 * 60 * 1000,
+  "10yr": 10 * 12 * 30 * 24 * 60 * 60 * 1000,
+  "11yr": 111, //All years
 } as const;
 
 export type Interval = keyof typeof intervalDurations;
@@ -32,12 +34,14 @@ export function getDataForInterval(
     throw new Error(`Unsupported interval: ${interval}`);
   }
 
+  if (intervalDurations[interval] === 111) {
+    return data;
+  }
+
   const startTime = new Date(now - duration);
-  console.log(`Now: ${now}`);
-  console.log(`Start: ${startTime}`);
 
   // Filter data based on the start time
-  return data.filter((entry) => {
+  return data.filter((entry: any) => {
     const entryDate = new Date(entry.date);
     return entryDate > startTime;
   });

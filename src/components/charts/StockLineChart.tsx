@@ -3,13 +3,14 @@ import { getDataForInterval, LineAxis } from "../../utils/chart";
 import { useEffect, useState } from "react";
 
 const StockLineChart = ({ stock1, selectedInterval }) => {
-  const [udata, setUdata] = useState(stock1);
-  const mData = udata ? LineAxis(udata) : [];
+  const [udata, setUdata] = useState(undefined);
+  const mData = udata ? LineAxis(udata) : LineAxis(stock1);
+
   useEffect(() => {
-    if (selectedInterval) {
-      const lastEntry = udata[0].date;
-      const results = getDataForInterval(udata, selectedInterval, lastEntry);
-      if (results) {
+    if (selectedInterval && stock1 !== undefined && stock1.length > 0) {
+      const lastEntry = stock1[0].date;
+      const results = getDataForInterval(stock1, selectedInterval, lastEntry);
+      if (results && results.length > 0) {
         setUdata(results);
       }
     }
