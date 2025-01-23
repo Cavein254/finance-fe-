@@ -8,7 +8,7 @@ interface UserContextType {
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
 }
 
-const MyUserContext = createContext<UserContextType | undefined>({
+const MyUserContext = createContext<UserContextType>({
   user: undefined,
   setUser: () => {},
 });

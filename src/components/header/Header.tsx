@@ -4,10 +4,10 @@ import { FaMoneyBills } from "react-icons/fa6";
 import { FaUnlockAlt } from "react-icons/fa";
 import { useContext } from "react";
 import { MyUserContext } from "../../context/UserContext";
+import HeaderDropDown from "./HeaderDropDown";
 const Header = () => {
   const userContext = useContext(MyUserContext);
   const { user } = userContext;
-  console.log(user);
   return (
     <div className=" bg-green-600">
       <div className="flex justify-between items-center p-4">
@@ -20,12 +20,16 @@ const Header = () => {
         <div></div>
         <div className="flex gap-2">
           <ModeToggle />
-          <Button className="bg-slate-50 text-slate-900">
-            <span className="md:hidden">
-              <FaUnlockAlt />
-            </span>
-            <span className="hidden md:flex">Login</span>
-          </Button>
+          {user ? (
+            <HeaderDropDown user={user} />
+          ) : (
+            <Button className="bg-slate-50 text-slate-900">
+              <span className="md:hidden">
+                <FaUnlockAlt />
+              </span>
+              <span className="hidden md:flex">Login</span>
+            </Button>
+          )}
         </div>
       </div>
     </div>
