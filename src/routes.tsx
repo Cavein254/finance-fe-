@@ -4,6 +4,7 @@ import RootLayout from "./components/layouts/RootLayout";
 import LandingPage from "./pages/landing";
 import MainPage from "./pages/main";
 import MainLayout from "./components/layouts/MainLayout";
+import TickerPage from "./pages/ticker/ticker";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <MainPage />,
+      },
+      {
+        path: "/ticker/:ticker",
+        element: <TickerPage />,
       },
     ],
   },
