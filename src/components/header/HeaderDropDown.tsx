@@ -28,7 +28,9 @@ const HeaderDropDown = ({ user }: HeaderDropDownProps) => {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link to="/ticker/compare">Compare Stock</Link>
+          </DropdownMenuItem>
           <DropdownMenuItem>Team</DropdownMenuItem>
           <DropdownMenuItem>
             <Link to="">Logout</Link>

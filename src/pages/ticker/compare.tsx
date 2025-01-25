@@ -42,6 +42,7 @@ const CompareTicker = () => {
       symbol={symbol}
       handleAddTicker={handleAddTicker}
       handleRemoveTicker={handleRemoveTicker}
+      key={symbol.id}
     />
   ));
   const selectedSymbols = selected?.map((symbol) => (

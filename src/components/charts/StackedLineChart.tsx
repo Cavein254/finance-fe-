@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { VictoryChart, VictoryLine, VictoryStack, VictoryTheme } from "victory";
+import {
+  VictoryChart,
+  VictoryLegend,
+  VictoryLine,
+  VictoryStack,
+  VictoryTheme,
+} from "victory";
 import { StockTicker } from "../../__generated__/graphql";
-import { useLazyQuery } from "@apollo/client";
 import { GET_HISTORICAL_DATA } from "../../graphql/operations/query/ticker";
+import { useLazyQuery } from "@apollo/client";
+import { LineAxis } from "../../utils/chart";
+import uniqolor from "uniqolor";
 
 interface StackedLineChartProps {
   selected: StockTicker[];
@@ -11,15 +19,15 @@ interface StackedLineChartProps {
 const StackedLineChart = ({ selected }: StackedLineChartProps) => {
   const allSymbols = selected?.map((symbol) => symbol.ticker);
   const [getHistoricalData] = useLazyQuery(GET_HISTORICAL_DATA);
-  const [symbolData, setSymbolData] = useState();
-  const allErrors = [];
+  const [symbolData, setSymbolData] = useState({});
+  const [allErrors, setAllErrors] = useState();
 
   useEffect(() => {
-    const fetchTickers = async () => {
+    const fetchTickers = async (symbols: Array<string> | undefined) => {
       const tempErrors: any = [];
       const tempTickerData: any = {};
-      if (allSymbols.length > 0) {
-        for (let symbol of allSymbols) {
+      if (symbols && symbols?.length > 0) {
+        for (let symbol of symbols) {
           await getHistoricalData({
             variables: {
               symbol,
@@ -38,36 +46,67 @@ const StackedLineChart = ({ selected }: StackedLineChartProps) => {
           });
         }
       }
-      setSymbolData(tempTickerData);
-      allErrors.push(tempErrors);
+
+      setSymbolData(tempTickerData), setAllErrors(tempErrors);
     };
-    fetchTickers();
+    fetchTickers(allSymbols);
   }, [selected]);
-  console.log(symbolData["AVGR"]);
+
+  const legendData: any = [];
+  const allMyInfor = () => {
+    if (Object.keys(symbolData).length >= 0) {
+      const allDataMapped = Object.entries(symbolData).map(([key, value]) => {
+        return { symbol: key, data: value };
+      });
+      return allDataMapped?.map((ticker) => {
+        const mData = LineAxis(ticker.data);
+        if (mData) {
+          const mycolor = uniqolor.random({
+            saturation: 80,
+            lightness: [70, 80],
+          });
+          legendData.push({
+            name: ticker.symbol,
+            symbol: { fill: mycolor.color },
+          });
+          return (
+            <VictoryLine
+              key={ticker.symbol}
+              data={mData}
+              style={{
+                data: {
+                  stroke: mycolor.color,
+                },
+              }}
+            />
+          );
+        }
+        return null;
+      });
+    }
+    return null;
+  };
+
   return (
-    <div>
-      {/* <VictoryChart theme={VictoryTheme.clean}>
-        <VictoryStack colorScale="qualitative">
-          <VictoryLine
-            data={[
-              { x: 1, y: 2 },
-              { x: 2, y: 3 },
-              { x: 3, y: 5 },
-              { x: 4, y: 4 },
-              { x: 5, y: 7 },
-            ]}
-          />
-          <VictoryLine
-            data={[
-              { x: 1, y: 4 },
-              { x: 2, y: 2 },
-              { x: 3, y: 7 },
-              { x: 4, y: 5 },
-              { x: 5, y: 3 },
-            ]}
-          />
-        </VictoryStack>
-      </VictoryChart> */}
+    <div className="flex flex-col">
+      <h1>Historical Prices</h1>
+      <VictoryChart theme={VictoryTheme.clean}>{allMyInfor()}</VictoryChart>
+      <div className="border-2 border-red-500">
+        <VictoryLegend
+          x={10}
+          y={10}
+          title="Stock Performance Comparison"
+          centerTitle
+          orientation="vertical"
+          gutter={10}
+          style={{
+            border: { stroke: "green" },
+            title: { fontSize: 10 },
+            labels: { fontSize: 9 },
+          }}
+          data={legendData}
+        />
+      </div>
     </div>
   );
 };

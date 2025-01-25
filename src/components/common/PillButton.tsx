@@ -15,11 +15,11 @@ const PillButton = ({
   const [active, setActive] = useState(false);
   const handleClick = () => {
     if (active === false) {
-      setActive(true);
       handleAddTicker(symbol);
+      return setActive(true);
     } else {
       handleRemoveTicker(symbol.id);
-      setActive(false);
+      return setActive(false);
     }
   };
   return (
