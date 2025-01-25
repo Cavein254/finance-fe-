@@ -1,7 +1,6 @@
 import { VictoryChart, VictoryLine, VictoryTheme } from "victory";
 import { getDataForInterval, LineAxis } from "../../utils/chart";
 import { useEffect, useState } from "react";
-
 interface StockLineChartProps {
   stock1: any;
   selectedInterval: string;
@@ -20,6 +19,7 @@ const StockLineChart = ({ stock1, selectedInterval }: StockLineChartProps) => {
       }
     }
   }, [selectedInterval]);
+
   return (
     <div>
       <VictoryChart theme={VictoryTheme.clean}>

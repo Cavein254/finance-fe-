@@ -56,44 +56,6 @@ const StackedLineChart = ({
     fetchTickers(allSymbols);
   }, [selected]);
 
-  // const legendData: any = [];
-  // const allMyInfor = () => {
-  //   if (Object.keys(symbolData).length >= 0) {
-  //     const allDataMapped = Object.entries(symbolData).map(([key, value]) => {
-  //       return { symbol: key, data: value };
-  //     });
-  //     return allDataMapped?.map((ticker) => {
-  //       const mData = LineAxis(ticker.data);
-  //       const lastEntry = mData[0]?.x;
-  //       const results = getDataForInterval(mData, selectedInterval, lastEntry);
-  //       setPrintData(results);
-  //       if (printData) {
-  //         const mycolor = uniqolor.random({
-  //           saturation: 80,
-  //           lightness: [70, 80],
-  //         });
-  //         legendData.push({
-  //           name: ticker.symbol,
-  //           symbol: { fill: mycolor.color },
-  //         });
-  //         return (
-  //           <VictoryLine
-  //             key={ticker.symbol}
-  //             data={printData}
-  //             style={{
-  //               data: {
-  //                 stroke: mycolor.color,
-  //               },
-  //             }}
-  //           />
-  //         );
-  //       }
-  //       return null;
-  //     });
-  //   }
-  //   return null;
-  // };
-
   const chartData = useMemo(() => {
     if (Object.keys(symbolData).length > 0) {
       return Object.entries(symbolData).map(([symbol, data]) => {

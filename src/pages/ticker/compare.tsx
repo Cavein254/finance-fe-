@@ -21,6 +21,10 @@ const CompareTicker = () => {
 
   const [title, setTitle] = useState(undefined);
 
+  const handleClear = () => {
+    setSelected([]);
+  };
+
   const handleAddTicker = (ticker: StockTicker) => {
     setSelected((prevSelected) => {
       if (!prevSelected.some((item) => item.id === ticker.id)) {
@@ -69,8 +73,11 @@ const CompareTicker = () => {
             </h4>
             <div className="flex justify-between">
               <div className="flex gap-2 flex-wrap">{selectedSymbols}</div>
-              <div className="">
+              <div className="flex gap-2">
                 <Button onClick={() => setCompare(true)}>Compare</Button>
+                <Button onClick={handleClear} className="bg-red-600">
+                  Clear
+                </Button>
               </div>
             </div>
           </div>
