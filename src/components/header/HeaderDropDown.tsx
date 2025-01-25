@@ -15,7 +15,6 @@ interface HeaderDropDownProps {
   user: User;
 }
 const HeaderDropDown = ({ user }: HeaderDropDownProps) => {
-  console.log(user.image);
   return (
     <div>
       <DropdownMenu>

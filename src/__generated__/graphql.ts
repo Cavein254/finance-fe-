@@ -19,6 +19,7 @@ export type Scalars = {
   JSON: { input: any; output: any; }
 };
 
+/** The results of stocks array */
 export type GetStockDataResponse = {
   __typename?: 'GetStockDataResponse';
   data?: Maybe<Array<Maybe<StockData>>>;
@@ -38,6 +39,7 @@ export type QueryGetHistoricalDataArgs = {
   symbol: Scalars['String']['input'];
 };
 
+/** This is the structure of a stock */
 export type StockData = {
   __typename?: 'StockData';
   close?: Maybe<Scalars['Float']['output']>;
@@ -50,6 +52,7 @@ export type StockData = {
   stockId?: Maybe<Scalars['String']['output']>;
 };
 
+/** Results of a user object */
 export type StockSingleRow = {
   __typename?: 'StockSingleRow';
   id: Scalars['String']['output'];
@@ -58,6 +61,7 @@ export type StockSingleRow = {
   ticker?: Maybe<Scalars['String']['output']>;
 };
 
+/** Results of a all stock symbols with the most recent stock entry */
 export type StockSingleRowResults = {
   __typename?: 'StockSingleRowResults';
   data?: Maybe<Array<Maybe<StockSingleRow>>>;
@@ -65,6 +69,7 @@ export type StockSingleRowResults = {
   success: Scalars['Boolean']['output'];
 };
 
+/** A user type object */
 export type User = {
   __typename?: 'User';
   createdAt?: Maybe<Scalars['Date']['output']>;
@@ -75,6 +80,7 @@ export type User = {
   updatedAt?: Maybe<Scalars['Date']['output']>;
 };
 
+/** Results of a user object */
 export type UserDataResponse = {
   __typename?: 'UserDataResponse';
   data?: Maybe<User>;
