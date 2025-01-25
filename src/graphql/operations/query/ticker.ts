@@ -42,3 +42,17 @@ export const GET_HISTORICAL_FIRST_ROW = gql(`
   }
 }
   `);
+
+export const GET_ALL_STOCK_SYMBOLS = gql(`
+  query GetAllSymbols {
+  getAllSymbols {
+    data {
+      id
+      name
+      ticker
+    }
+    error
+    success
+  }
+}
+  `);

@@ -5,6 +5,7 @@ import LandingPage from "./pages/landing";
 import MainPage from "./pages/main";
 import MainLayout from "./layouts/MainLayout";
 import TickerPage from "./pages/ticker/ticker";
+import CompareTicker from "./pages/ticker/compare";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "/ticker/:ticker",
         element: <TickerPage />,
+      },
+      {
+        path: "/ticker/compare",
+        element: <CompareTicker />,
       },
     ],
   },

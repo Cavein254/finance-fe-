@@ -1,7 +1,7 @@
 import React from "react";
 import { VictoryChart, VictoryLine, VictoryStack, VictoryTheme } from "victory";
 
-const StackedLineChart = ({ stock1 }) => {
+const StackedLineChart = ({}) => {
   return (
     <div>
       <VictoryChart theme={VictoryTheme.clean}>
