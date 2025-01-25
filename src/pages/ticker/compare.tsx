@@ -13,6 +13,8 @@ const CompareTicker = () => {
   );
   const [selected, setSelected] = useState<Array<StockTicker>>([]);
 
+  const [compare, setCompare] = useState(false);
+
   const handleAddTicker = (ticker: StockTicker) => {
     setSelected((prevSelected) => {
       if (!prevSelected.some((item) => item.id === ticker.id)) {
@@ -26,8 +28,6 @@ const CompareTicker = () => {
       prevSelected.filter((ticker) => ticker.id !== id)
     );
   };
-
-  console.log(selected);
 
   const { error } = useQuery(GET_ALL_STOCK_SYMBOLS, {
     onCompleted: (data) => {
@@ -63,7 +63,7 @@ const CompareTicker = () => {
             <div className="flex justify-between">
               <div className="flex gap-2 flex-wrap">{selectedSymbols}</div>
               <div className="">
-                <Button>Compare</Button>
+                <Button onClick={() => setCompare(true)}>Compare</Button>
               </div>
             </div>
           </div>
@@ -72,7 +72,7 @@ const CompareTicker = () => {
           {symbolsList}
         </div>
       </div>
-      <StackedLineChart />
+      {compare && <StackedLineChart selected={selected} />}
     </div>
   );
 };
