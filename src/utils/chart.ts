@@ -42,8 +42,15 @@ export function getDataForInterval(
 
   // Filter data based on the start time
   return data.filter((entry: any) => {
-    const entryDate = new Date(entry.date);
-    return entryDate > startTime;
+    if (entry?.date) {
+      const entryDate = new Date(entry.date);
+
+      // console.log(entryDate > startTime)
+      return entryDate > startTime;
+    }
+    if (entry?.x) {
+      return entry.x > startTime;
+    }
   });
 }
 

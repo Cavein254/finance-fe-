@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   VictoryChart,
   VictoryLegend,
@@ -9,14 +9,18 @@ import {
 import { StockTicker } from "../../__generated__/graphql";
 import { GET_HISTORICAL_DATA } from "../../graphql/operations/query/ticker";
 import { useLazyQuery } from "@apollo/client";
-import { LineAxis } from "../../utils/chart";
+import { getDataForInterval, LineAxis } from "../../utils/chart";
 import uniqolor from "uniqolor";
 
 interface StackedLineChartProps {
   selected: StockTicker[];
+  selectedInterval: string;
 }
 
-const StackedLineChart = ({ selected }: StackedLineChartProps) => {
+const StackedLineChart = ({
+  selected,
+  selectedInterval,
+}: StackedLineChartProps) => {
   const allSymbols = selected?.map((symbol) => symbol.ticker);
   const [getHistoricalData] = useLazyQuery(GET_HISTORICAL_DATA);
   const [symbolData, setSymbolData] = useState({});
@@ -52,46 +56,88 @@ const StackedLineChart = ({ selected }: StackedLineChartProps) => {
     fetchTickers(allSymbols);
   }, [selected]);
 
-  const legendData: any = [];
-  const allMyInfor = () => {
-    if (Object.keys(symbolData).length >= 0) {
-      const allDataMapped = Object.entries(symbolData).map(([key, value]) => {
-        return { symbol: key, data: value };
-      });
-      return allDataMapped?.map((ticker) => {
-        const mData = LineAxis(ticker.data);
-        if (mData) {
-          const mycolor = uniqolor.random({
-            saturation: 80,
-            lightness: [70, 80],
-          });
-          legendData.push({
-            name: ticker.symbol,
-            symbol: { fill: mycolor.color },
-          });
-          return (
-            <VictoryLine
-              key={ticker.symbol}
-              data={mData}
-              style={{
-                data: {
-                  stroke: mycolor.color,
-                },
-              }}
-            />
-          );
-        }
-        return null;
+  // const legendData: any = [];
+  // const allMyInfor = () => {
+  //   if (Object.keys(symbolData).length >= 0) {
+  //     const allDataMapped = Object.entries(symbolData).map(([key, value]) => {
+  //       return { symbol: key, data: value };
+  //     });
+  //     return allDataMapped?.map((ticker) => {
+  //       const mData = LineAxis(ticker.data);
+  //       const lastEntry = mData[0]?.x;
+  //       const results = getDataForInterval(mData, selectedInterval, lastEntry);
+  //       setPrintData(results);
+  //       if (printData) {
+  //         const mycolor = uniqolor.random({
+  //           saturation: 80,
+  //           lightness: [70, 80],
+  //         });
+  //         legendData.push({
+  //           name: ticker.symbol,
+  //           symbol: { fill: mycolor.color },
+  //         });
+  //         return (
+  //           <VictoryLine
+  //             key={ticker.symbol}
+  //             data={printData}
+  //             style={{
+  //               data: {
+  //                 stroke: mycolor.color,
+  //               },
+  //             }}
+  //           />
+  //         );
+  //       }
+  //       return null;
+  //     });
+  //   }
+  //   return null;
+  // };
+
+  const chartData = useMemo(() => {
+    if (Object.keys(symbolData).length > 0) {
+      return Object.entries(symbolData).map(([symbol, data]) => {
+        const formattedData = LineAxis(data);
+        const lastEntry = formattedData[0]?.x;
+        const intervalData = getDataForInterval(
+          formattedData,
+          selectedInterval,
+          lastEntry
+        );
+        const color = uniqolor.random({
+          saturation: 80,
+          lightness: [70, 80],
+        }).color;
+        return {
+          symbol,
+          data: intervalData,
+          color,
+        };
       });
     }
-    return null;
-  };
+    return [];
+  }, [symbolData, selectedInterval]);
+
+  const legendData = chartData.map(({ symbol, color }) => ({
+    name: symbol,
+    symbol: { fill: color },
+  }));
 
   return (
-    <div className="flex flex-col">
-      <h1>Historical Prices</h1>
-      <VictoryChart theme={VictoryTheme.clean}>{allMyInfor()}</VictoryChart>
-      <div className="border-2 border-red-500">
+    <div className="flex flex-col pt-4">
+      <div className="flex justify-center">
+        <h1 className="text-center text-2xl font-bold">Historical Prices</h1>
+      </div>
+      <VictoryChart theme={VictoryTheme.clean}>
+        {chartData.map(({ symbol, data, color }) => (
+          <VictoryLine
+            key={symbol}
+            data={data}
+            style={{ data: { stroke: color } }}
+          />
+        ))}
+      </VictoryChart>
+      <div className="">
         <VictoryLegend
           x={10}
           y={10}

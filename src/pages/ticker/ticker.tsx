@@ -4,7 +4,6 @@ import { GET_HISTORICAL_DATA } from "../../graphql/operations/query/ticker";
 import { useEffect, useState } from "react";
 import StockLineChart from "../../components/charts/StockLineChart";
 import DurationBtn from "../../components/common/duration-btn";
-import { getDataForInterval, Interval } from "../../utils/chart";
 import Loader from "../../components/common/loader";
 
 const TickerPage = () => {

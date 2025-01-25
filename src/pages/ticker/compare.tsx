@@ -6,14 +6,20 @@ import { useState } from "react";
 import { StockTicker } from "../../__generated__/graphql";
 import PillButton from "../../components/common/PillButton";
 import { Button } from "../../components/ui/button";
+import DurationBtn from "../../components/common/duration-btn";
 
 const CompareTicker = () => {
   const [symbols, setSymbols] = useState<Array<StockTicker> | undefined>(
     undefined
   );
+  const [selectedInterval, setSelectedInterval] = useState<undefined | string>(
+    "11yr"
+  );
   const [selected, setSelected] = useState<Array<StockTicker>>([]);
 
   const [compare, setCompare] = useState(false);
+
+  const [title, setTitle] = useState(undefined);
 
   const handleAddTicker = (ticker: StockTicker) => {
     setSelected((prevSelected) => {
@@ -69,11 +75,23 @@ const CompareTicker = () => {
             </div>
           </div>
         )}
-        <div className=" dark:bg-slate-600 bg-slate-300 p-2 flex flex-wrap justify-center items-center gap-2 h-[30vh] overflow-scroll">
+        <div className=" dark:bg-slate-600 bg-slate-300 p-2 flex flex-wrap justify-center items-center gap-2 h-[20vh] overflow-scroll">
           {symbolsList}
         </div>
       </div>
-      {compare && <StackedLineChart selected={selected} />}
+      <div className="m-4 p-4">
+        <DurationBtn
+          selectedInterval={selectedInterval}
+          setSelectedInterval={setSelectedInterval}
+          setTitle={setTitle}
+        />
+        {compare && (
+          <StackedLineChart
+            selected={selected}
+            selectedInterval={selectedInterval}
+          />
+        )}
+      </div>
     </div>
   );
 };
