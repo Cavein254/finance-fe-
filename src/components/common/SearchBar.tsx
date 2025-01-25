@@ -2,12 +2,13 @@ import { useQuery } from "@apollo/client";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { GET_ALL_STOCK_SYMBOLS } from "../../graphql/operations/query/ticker";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [stock, setStock] = useState("");
   const { data, loading } = useQuery(GET_ALL_STOCK_SYMBOLS);
   const allSymbols = data?.getAllSymbols?.data?.map((tick) => tick.ticker);
-  console.log(allSymbols);
+  const navigate = useNavigate();
 
   const filteredSymbols = stock
     ? allSymbols.filter((symbol) =>
@@ -24,7 +25,9 @@ const SearchBar = () => {
           value={stock}
           onChange={(e) => setStock(e.target.value)}
         />
-        <Search size={32} className="-mt-9 ml-2  text-gray-500 font-bold" />
+        <button onClick={() => navigate(`ticker/${stock}`)}>
+          <Search size={32} className="-mt-9 ml-2  text-gray-500 font-bold" />
+        </button>
         {stock && filteredSymbols.length > 0 && (
           <div className="relative bg-gray-100 mt-4 w-[75%] border border-gray-300 rounded shadow-xl">
             {filteredSymbols.map((symbol, index) => (

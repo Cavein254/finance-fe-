@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import StockLineChart from "../../components/charts/StockLineChart";
 import DurationBtn from "../../components/common/duration-btn";
 import { getDataForInterval, Interval } from "../../utils/chart";
+import Loader from "../../components/common/loader";
 
 const TickerPage = () => {
   const [stock1, setStock1] = useState(undefined);
@@ -33,7 +34,7 @@ const TickerPage = () => {
     console.log(error);
   }
   if (loading) {
-    return <h1>Loading ...</h1>;
+    return <Loader />;
   }
 
   return (
