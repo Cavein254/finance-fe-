@@ -11,6 +11,7 @@ import { GET_HISTORICAL_DATA } from "../../graphql/operations/query/ticker";
 import { useLazyQuery } from "@apollo/client";
 import { getDataForInterval, LineAxis } from "../../utils/chart";
 import uniqolor from "uniqolor";
+import ErrorDisplay from "../common/ErrorDisplay";
 
 interface StackedLineChartProps {
   selected: StockTicker[];
@@ -87,6 +88,9 @@ const StackedLineChart = ({
 
   return (
     <div className="flex flex-col pt-4">
+      {allErrors?.length > 0 && (
+        <ErrorDisplay error={JSON.stringify(allErrors)} />
+      )}
       <div className="flex justify-center">
         <h1 className="text-center text-2xl font-bold">Historical Prices</h1>
       </div>

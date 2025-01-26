@@ -1,7 +1,16 @@
 export const dailyReturns = (prices: any) => {
   const dailyReturns = [];
-  for (let i = 1; i < prices.length; i++) {
-    dailyReturns.push((prices[i] - prices[i - 1]) / prices[i - 1]);
+  const filteredPrices = prices?.map((price) => {
+    if (price?.close) {
+      return price?.close;
+    } else {
+      return price?.x;
+    }
+  });
+  for (let i = 1; i < filteredPrices.length; i++) {
+    dailyReturns.push(
+      (filteredPrices[i] - filteredPrices[i - 1]) / filteredPrices[i - 1]
+    );
   }
   return dailyReturns;
 };
