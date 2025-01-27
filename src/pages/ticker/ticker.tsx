@@ -43,12 +43,19 @@ const TickerPage = () => {
   }
 
   const handleModal = () => {
-    setOpen(!open);
+    console.log("clicked");
+    setOpen(false);
   };
 
   return (
     <div className="w-full">
-      {open && <Portfolio />}
+      {open && (
+        <Portfolio
+          handleModal={handleModal}
+          price={stock1[0]?.close}
+          ticker={ticker}
+        />
+      )}
       {fetchError && (
         <div className="px-4 py-2">
           <h4 className="text-slate-50 text-xl">{fetchError}</h4>
@@ -64,7 +71,7 @@ const TickerPage = () => {
               <h1 className="text-3xl font-bold uppercase">{ticker}</h1>
             </div>
             <div className="">
-              <Button onClick={handleModal}>Add to Porfolio</Button>
+              <Button onClick={() => setOpen(true)}>Add to Porfolio</Button>
             </div>
           </div>
           <div className="border-b-2 border-gray-400 my-4" />

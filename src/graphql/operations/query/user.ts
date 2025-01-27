@@ -16,3 +16,29 @@ export const GET_CURRENT_USER = gql`
     }
   }
 `;
+
+export const GET_MY_PORTFOLIO = gql(`
+  query GetMyPortfolio {
+  getMyPortfolio {
+    data {
+      id
+      name
+      description
+      totalInvestment
+      stocks {
+        id
+        name
+        ticker
+        quantity
+        purchasePrice
+        currentPrice
+        lastUpdated
+      }
+      createdAt
+      updatedAt
+    }
+    error
+    success
+  }
+}
+  `);
