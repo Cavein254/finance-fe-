@@ -3,7 +3,9 @@ import { GET_MY_PORTFOLIO } from "../../graphql/operations/query/user";
 import ErrorDisplay from "../common/ErrorDisplay";
 import Loader from "../common/loader";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { MyUserContext } from "../../context/UserContext";
 
 interface PortfolioProps {
   handleModal: () => void;
@@ -22,9 +24,16 @@ type Stock = {
   portfolioId: string;
 };
 
-const CreatePortfolio = () => {};
+type Portfolio = {
+  name: string;
+  description: string;
+  totalInvestment: number;
+  userId: string;
+};
 
 const Portfolio = ({ handleModal, price, ticker }: PortfolioProps) => {
+  const userContext = useContext(MyUserContext);
+  const { user } = userContext;
   const initialState: Stock = {
     name: ticker,
     ticker,
@@ -35,27 +44,191 @@ const Portfolio = ({ handleModal, price, ticker }: PortfolioProps) => {
     purchasePrice: 0,
     totalValue: 0,
   };
+  const initialPortfolio: Portfolio = {
+    name: "",
+    description: "",
+    totalInvestment: 0,
+    userId: "",
+  };
   const { data, error, loading } = useQuery(GET_MY_PORTFOLIO);
   const [selected, setSelected] = useState("");
   const [insertStock, setInsertStock] = useState<Stock>(initialState);
-  const [porfolioId, setPortfolioId] = useState("");
+  const [portfolioId, setPortfolioId] = useState("");
+  const [portfolio, setPortfolio] = useState<Portfolio>(initialPortfolio);
   if (error) {
     <ErrorDisplay error={JSON.stringify(error)} />;
   }
   if (loading) {
     return <Loader />;
   }
-  const portfolios = data?.getMyPortfolio?.data;
+  const portfolios = data?.getMyPortfolio?.data || [];
   const portfolioList = portfolios?.map((portfolio) => portfolio?.name);
 
   useEffect(() => {
     if (selected) {
-      const myPortfolio = portfolios?.filter(
+      const myPortfolio = portfolios?.find(
         (portfolio) => portfolio?.name === selected
       );
-      setPortfolioId(myPortfolio[0]?.id);
+      setPortfolioId(myPortfolio?.id || "");
     }
   }, [selected]);
+
+  const handleAdd = () => {
+    if (!portfolioId) {
+      <div className="z-50">
+        <ErrorDisplay error="Select a portfolio First!" />
+      </div>;
+    }
+    const newAdd: Stock = {
+      ...insertStock,
+      totalValue: insertStock.quantity * insertStock.purchasePrice,
+      portfolioId,
+    };
+    console.log(newAdd);
+  };
+
+  const handleCreatePortfolio = () => {
+    if (!user) {
+      <div className="z-50">
+        <ErrorDisplay error="You must be logged in to perform this action!" />
+      </div>;
+    }
+    const newPortfolio: Portfolio = {
+      ...portfolio,
+      userId: user?.id || "",
+    };
+
+    console.log(newPortfolio);
+  };
+
+  const portfolioPage = () => (
+    <div className="flex flex-col">
+      <div className="flex justify-center">
+        <h1 className="font-bold text-xl">Add UPLD to your portfolio</h1>
+      </div>
+      <div className="flex flex-col ">
+        <label>Select Portfolio</label>
+        <select
+          name="portfolio"
+          onChange={(e) => setSelected(e.target.value)}
+          className="my-4 px-4 py-2 text-xl font-bold dark:bg-slate-800"
+        >
+          {portfolioList?.map((item) => (
+            <option value={item} className="dark:bg-slate-800">
+              {item}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="">
+        <div className="flex flex-col">
+          <label>Stock Symbol</label>
+          <input
+            className="rounded-sm dark:bg-slate-800 p-2"
+            disabled
+            value={insertStock?.ticker}
+          />
+        </div>
+        <div className="flex flex-col">
+          <label>Quantity</label>
+          <input
+            className="rounded-sm dark:bg-slate-800 p-2"
+            onChange={(e) =>
+              setInsertStock({
+                ...insertStock,
+                quantity: parseFloat(e.target.value),
+              })
+            }
+          />
+        </div>
+        <div className="flex flex-col">
+          <label>Purchase Price</label>
+          <input
+            className="rounded-sm dark:bg-slate-800 p-2"
+            value={insertStock?.purchasePrice}
+            name="purchasePrice"
+            onChange={(e) =>
+              setInsertStock({
+                ...insertStock,
+                purchasePrice: parseFloat(e.target.value),
+              })
+            }
+          />
+        </div>
+        <div className="flex flex-col">
+          <label>Current Price</label>
+          <input
+            className="rounded-sm dark:bg-slate-800 p-2"
+            disabled
+            value={insertStock?.currentPrice}
+          />
+        </div>
+        <div className="flex flex-col">
+          <label>Purchase Date</label>
+          <input
+            className="rounded-sm dark:bg-slate-800 p-2"
+            value={insertStock?.purchaseDate}
+            disabled
+          />
+        </div>
+        <div className="py-4 flex justify-end">
+          <Button onClick={handleAdd}>Add</Button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const createPage = () => (
+    <div className=" flex flex-col">
+      <div className="flex justify-center">
+        <h4 className="font-bold  text-2xl">Create Portfolio</h4>
+      </div>
+      <div className="flex flex-col">
+        <div className="flex flex-col">
+          <label>Portfolio Name</label>
+          <input
+            className="rounded-sm dark:bg-slate-800 p-2"
+            value={portfolio?.name}
+            onChange={(e) =>
+              setPortfolio({
+                ...portfolio,
+                name: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div className="flex flex-col">
+          <label>Portfolio Description</label>
+          <textarea
+            className="rounded-sm dark:bg-slate-800 p-2"
+            value={portfolio?.description}
+            onChange={(e) =>
+              setPortfolio({
+                ...portfolio,
+                description: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div className="flex flex-col">
+          <label>Portfolio Total Investment</label>
+          <input
+            className="rounded-sm dark:bg-slate-800 p-2"
+            value={portfolio?.totalInvestment}
+            onChange={(e) =>
+              setPortfolio({
+                ...portfolio,
+                totalInvestment: parseFloat(e.target.value),
+              })
+            }
+          />
+        </div>
+        <div className="flex justify-end m-4">
+          <Button onClick={handleCreatePortfolio}>Create Portfolio</Button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="absolute border-2 border-red-700 w-full h-full flex justify-center items-center rounded-xl shadow-xl p-4 dark:bg-slate-600 bg-slate-300 z-40">
@@ -68,75 +241,7 @@ const Portfolio = ({ handleModal, price, ticker }: PortfolioProps) => {
             />
           </button>
         </div>
-        <div className="flex justify-center">
-          <h1 className="font-bold text-xl">Add UPLD to your portfolio</h1>
-        </div>
-        <div className="flex flex-col ">
-          <label>Select Portfolio</label>
-          <select
-            name="portfolio"
-            onChange={(e) => setSelected(e.target.value)}
-            className="my-4 px-4 py-2 text-xl font-bold dark:bg-slate-800"
-          >
-            {portfolioList?.map((item) => (
-              <option value={item} className="dark:bg-slate-800">
-                {item}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="">
-          <div className="flex flex-col">
-            <label>Stock Symbol</label>
-            <input
-              className="rounded-sm dark:bg-slate-800 p-2"
-              disabled
-              value={insertStock?.ticker}
-            />
-          </div>
-          <div className="flex flex-col">
-            <label>Quantity</label>
-            <input
-              className="rounded-sm dark:bg-slate-800 p-2"
-              onChange={(e) =>
-                setInsertStock({
-                  ...insertStock,
-                  quantity: parseFloat(e.target.value),
-                })
-              }
-            />
-          </div>
-          <div className="flex flex-col">
-            <label>Purchase Price</label>
-            <input
-              className="rounded-sm dark:bg-slate-800 p-2"
-              value={insertStock?.purchasePrice}
-              name="purchasePrice"
-              onChange={(e) =>
-                setInsertStock({
-                  ...insertStock,
-                  purchasePrice: parseFloat(e.target.value),
-                })
-              }
-            />
-          </div>
-          <div className="flex flex-col">
-            <label>Current Price</label>
-            <input
-              className="rounded-sm dark:bg-slate-800 p-2"
-              disabled
-              value={insertStock?.currentPrice}
-            />
-          </div>
-          <div className="flex flex-col">
-            <label>Purchase Date</label>
-            <input
-              className="rounded-sm dark:bg-slate-800 p-2"
-              value={insertStock?.purchaseDate}
-              disabled
-            />
-          </div>
-        </div>
+        {portfolios?.length < 1 ? createPage() : portfolioPage()}
       </div>
     </div>
   );
