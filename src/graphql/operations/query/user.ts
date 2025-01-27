@@ -42,3 +42,13 @@ export const GET_MY_PORTFOLIO = gql(`
   }
 }
   `);
+
+export const CREATE_STOCK_ENTRY = gql(`
+  mutation CreateStockEntry($input: CreateStockEntry) {
+  createStockEntry(input: $input) {
+    success
+    error
+    message
+  }
+}
+  `);

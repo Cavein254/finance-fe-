@@ -3,6 +3,7 @@ import React from "react";
 import { GET_HISTORICAL_FIRST_ROW } from "../../graphql/operations/query/ticker";
 import Tickercard from "../common/ticker-card";
 import { StockSingleRow } from "../../__generated__/graphql";
+import Loader from "../common/loader";
 
 const Dashboard = () => {
   const { data, error, loading } = useQuery(GET_HISTORICAL_FIRST_ROW);
@@ -10,7 +11,7 @@ const Dashboard = () => {
     return <h1>Unable to load page!</h1>;
   }
   if (loading) {
-    return <h1>Loading ...</h1>;
+    return <Loader />;
   }
   const tickerData = data?.getHistoricalFirstRow?.data;
 

@@ -6,6 +6,9 @@ import { useContext } from "react";
 import { MyUserContext } from "../../context/UserContext";
 import HeaderDropDown from "./HeaderDropDown";
 import { Link } from "react-router-dom";
+
+const VITE_SERVER_LOGIN: string = import.meta.env.VITE_SERVER_LOGIN as string;
+
 const Header = () => {
   const userContext = useContext(MyUserContext);
   const { user } = userContext;
@@ -25,12 +28,14 @@ const Header = () => {
           {user ? (
             <HeaderDropDown user={user} />
           ) : (
-            <Button className="bg-slate-50 text-slate-900">
-              <span className="md:hidden">
-                <FaUnlockAlt />
-              </span>
-              <span className="hidden md:flex">Login</span>
-            </Button>
+            <Link to={`${VITE_SERVER_LOGIN}`}>
+              <Button className="bg-slate-50 text-slate-900">
+                <span className="md:hidden">
+                  <FaUnlockAlt />
+                </span>
+                <span className="hidden md:flex">Login</span>
+              </Button>
+            </Link>
           )}
         </div>
       </div>

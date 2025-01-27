@@ -7,10 +7,12 @@ import { ThemeProvider } from "./components/theme/theme-provider.tsx";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./graphql/client.ts";
 import { UserProvider } from "./context/UserContext.tsx";
+import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ApolloProvider client={client}>
+      <ToastContainer />
       <UserProvider>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <RouterProvider router={router} />
